@@ -20,38 +20,59 @@ const AuthForm = () => {
     const enteredPassword = passwordInputRef.current.value;
 
     setIsLoading(true);
+
+    let url;
     if (isLogin) {
+
+
+  url =  "https://identitytoolkit.googleleapis.com/v1/accounts:signup/key=abcdefghijklmnopqrstuvwxyz";
+
+
+
     } else {
-      fetch(
-        "https://identitytoolkit.googleleapis.com/v1/accounts:signup/key=abcdefghijklmnopqrstuvwxyz",
-        {
-          method: "POST",
-          body: JSON.stringify({
-            email: enteredEmail,
-            password: enteredPassword,
-            returnSecureToken: true,
-          }),
-          headers: {
-            "content-type": "application/json",
-          },
-        }
-      ).then((res) => {
-        setIsLoading(false)
-        if (res.ok) {
-          //...
-        } else {
-          return res.json().then((data) => {
-            let errorMessage = ' authentication failed';
 
-            if(dara && data.error && data.error.message){
-             errorMessage = data.error.message;
-            }
-            alert(errorMessage);
-
-          });
-        }
-      });
+      url =  "https://identitytoolkit.googleleapis.com/v1/accounts:signup/key=abcdefghijklmnopqrstuvwxyz";
+     
     }
+
+    fetch(
+     url,
+      {
+        method: "POST",
+        body: JSON.stringify({
+          email: enteredEmail,
+          password: enteredPassword,
+          returnSecureToken: true,
+        }),
+        headers: {
+          "content-type": "application/json",
+        },
+      }
+    ).then((res) => {
+      setIsLoading(false)
+      if (res.ok) {
+        res.json();
+        return;
+      } else {
+        return res.json().then((data) => {
+          let errorMessage = ' authentication failed';
+
+          if(dara && data.error && data.error.message){
+           errorMessage = data.error.message;
+          }
+
+          throw new Error(errorMessage);
+
+        });
+      }
+    })
+    .then(data=>{
+         console.log(data);
+    })
+    .catch((err)=>{
+      alert(errorMessage);
+
+    })
   };
   return (
     <section className={classes.auth}>
