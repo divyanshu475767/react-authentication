@@ -1,11 +1,6 @@
 import React, { useState } from "react";
 
-const AuthContext = React.createContext({
-    token:'',
-    isLoggedIn:false,
-    login:(token)=>{},
-    logout:()=>{},
-});
+const AuthContext = React.createContext();
 
 
 export const AuthContextProvider = props =>{

@@ -1,10 +1,12 @@
 import { useState, useRef,useContext } from "react";
+import { useHistory } from "react-router-dom";
 
 import classes from "./AuthForm.module.css";
 import userEvent from "@testing-library/user-event";
 import AuthContext from "../../store/auth-context";
 
 const AuthForm = () => {
+  const history = useHistory();
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
 
@@ -71,6 +73,7 @@ const AuthForm = () => {
     })
     .then(data=>{
         authCtx.login(data.idtoken);
+        history.replace('/');
 
     })
     .catch((err)=>{
