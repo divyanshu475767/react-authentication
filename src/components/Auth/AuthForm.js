@@ -1,11 +1,14 @@
-import { useState, useRef } from "react";
+import { useState, useRef,useContext } from "react";
 
 import classes from "./AuthForm.module.css";
 import userEvent from "@testing-library/user-event";
+import AuthContext from "../../store/auth-context";
 
 const AuthForm = () => {
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
+
+  const authCtx = useContext(AuthContext);
 
   const [isLogin, setIsLogin] = useState(true);
   const [isLoading , setIsLoading] = useState(false);
@@ -55,10 +58,10 @@ const AuthForm = () => {
         return;
       } else {
         return res.json().then((data) => {
-          let errorMessage = ' authentication failed';
+        let errorMessage = ' authentication failed';
 
-          if(dara && data.error && data.error.message){
-           errorMessage = data.error.message;
+        if(dara && data.error && data.error.message){
+        errorMessage = data.error.message;
           }
 
           throw new Error(errorMessage);
@@ -67,7 +70,8 @@ const AuthForm = () => {
       }
     })
     .then(data=>{
-         console.log(data);
+        authCtx.login(data.idtoken);
+
     })
     .catch((err)=>{
       alert(errorMessage);
